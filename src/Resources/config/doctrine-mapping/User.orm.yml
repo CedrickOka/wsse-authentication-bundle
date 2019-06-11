@@ -1,0 +1,18 @@
+Oka\WSSEAuthenticationBundle\Model\User:
+    type: mappedSuperclass
+    fields:
+        username:
+            type: string
+            length: 128
+            unique: true
+        password:
+            type: string
+        roles:
+            type: array
+        enabled:
+            type: boolean
+        locked:
+            type: boolean
+        allowedIps:
+            column: allowed_ips
+            type: array

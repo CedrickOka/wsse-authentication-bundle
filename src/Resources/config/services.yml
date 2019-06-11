@@ -1,0 +1,10 @@
+services:
+# Command
+    Oka\WSSEAuthenticationBundle\Command\:
+        resource: '../../Command/*'
+        tags: ['console.command']
+        arguments: ['@oka_wsse_authentication.util.wsse_user_manipulator']
+
+# Security
+    oka_wsse_authentication.request_matcher:
+        class: Oka\WSSEAuthenticationBundle\Http\WsseRequestMatcher

@@ -1,0 +1,63 @@
+{
+	"name" : "coka/wsse-authentication-bundle",
+	"type" : "symfony-bundle",
+	"license" : "MIT",
+	"description" : "Allows WSSE authentication provider",
+	"keywords" : [
+		"WSSE",
+		"Authentication"
+	],
+	"authors" : [{
+			"name" : "Cedrick Oka Baidai",
+			"email" : "okacedrick@gmail.com"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"Oka\\WSSEAuthenticationBundle\\" : "src"
+		},
+		"exclude-from-classmap" : [
+			"/tests/"
+		]
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"Oka\\WSSEAuthenticationBundle\\Tests\\" : "tests/"
+		}
+	},
+	"require" : {
+		"php" : ">=5.6",
+		"symfony/dependency-injection" : "^3.4 || ^4.0",
+		"symfony/config" : "^3.4 || ^4.0",
+		"symfony/http-kernel" : "^3.4 || ^4.0",
+		"symfony/security" : "^3.4 || ^4.0",
+		"symfony/security-bundle" : "^3.4 || ^4.0",
+		"symfony/translation": "^3.4 || ^4.0"
+	},
+	"require-dev" : {
+		"doctrine/doctrine-bundle" : "^1.11",
+		"alcaeus/mongo-php-adapter" : "^1.1",
+		"doctrine/mongodb-odm-bundle" : "^3.5"
+	},
+	"suggest" : {
+		"doctrine/doctrine-bundle" : "^1.11",
+		"alcaeus/mongo-php-adapter" : "^1.1",
+		"doctrine/mongodb-odm-bundle" : "^3.5"
+	},
+	"config" : {
+		"platform" : {
+			"ext-mongo" : "1.6.16"
+		}
+	},
+	"extra" : {
+		"branch-alias" : {
+			"dev-master" : "1.0.x-dev"
+		},
+		"symfony" : {
+			"allow-contrib" : "true"
+		}
+	},
+	"support" : {
+		"docs" : "https://github.com/CedrickOka/wsse-authentication/blob/master/src/Resources/doc/index.md"
+	}
+}
