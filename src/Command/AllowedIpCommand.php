@@ -32,8 +32,8 @@ abstract class AllowedIpCommand extends UserCommand
 		
 		if (!$input->getArgument('ip')) {
 			$question = new Question('Please choose a IP:');
-			$question->setValidator(function ($ip) {
-				if (empty($ip)) {
+			$question->setValidator(function($ip){
+				if (true === empty($ip)) {
 					throw new \Exception('IP can not be empty');
 				}
 				

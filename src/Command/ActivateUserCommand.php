@@ -22,8 +22,8 @@ class ActivateUserCommand extends UserCommand
 		
 		$this->setName(static::$defaultName)
 			 ->setDescription('Activate a user')
-			->setHelp(<<<EOF
-The <info>oka:api:wsse-user-activate</info> command activates a user (so they will be able to log in):
+			 ->setHelp(<<<EOF
+The <info>oka:wsse-authentication:user:activate</info> command activates a user (so they will be able to log in):
 
   <info>php %command.full_name% admin</info>
 EOF

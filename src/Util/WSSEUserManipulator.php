@@ -3,13 +3,14 @@ namespace Oka\WSSEAuthenticationBundle\Util;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oka\WSSEAuthenticationBundle\Events;
-use Oka\WSSEAuthenticationBundle\Event\UserEvent;
+use Oka\WSSEAuthenticationBundle\Event\WSSEUserEvent;
 use Oka\WSSEAuthenticationBundle\Model\WSSEUserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
+ * 
  * Executes some manipulations on the WSSE users.
- *
+ * 
  * @author Cedrick Oka Baidai <okacedrick@gmail.com>
  * 
  */
@@ -36,7 +37,7 @@ class WSSEUserManipulator
 	private $objectRepository;
 
 	/**
-	 * WsseUserManipulator constructor.
+	 * WSSEUserManipulator constructor.
 	 * 
 	 * @param ObjectManager				$objectManager
 	 * @param EventDispatcherInterface	$dispatcher
@@ -72,7 +73,8 @@ class WSSEUserManipulator
 		$user->setRoles($roles);
 		
 		$this->saveUser($user);
-		$this->dispatcher->dispatch(Events::USER_CREATED, new UserEvent($user));
+		
+		$this->dispatcher->dispatch(Events::USER_CREATED, new WSSEUserEvent($user));
 		
 		return $user;
 	}
@@ -88,7 +90,8 @@ class WSSEUserManipulator
 		$user->setEnabled(true);
 		
 		$this->saveUser($user);
-		$this->dispatcher->dispatch(Events::USER_ACTIVATED, new UserEvent($user));
+		
+		$this->dispatcher->dispatch(Events::USER_ACTIVATED, new WSSEUserEvent($user));
 	}
 
 	/**
@@ -102,7 +105,8 @@ class WSSEUserManipulator
 		$user->setEnabled(false);
 		
 		$this->saveUser($user);
-		$this->dispatcher->dispatch(Events::USER_DEACTIVATED, new UserEvent($user));
+		
+		$this->dispatcher->dispatch(Events::USER_DEACTIVATED, new WSSEUserEvent($user));
 	}
 
 	/**
@@ -117,7 +121,8 @@ class WSSEUserManipulator
 		$user->setPassword($password);
 		
 		$this->saveUser($user);
-		$this->dispatcher->dispatch(Events::USER_PASSWORD_CHANGED, new UserEvent($user));
+		
+		$this->dispatcher->dispatch(Events::USER_PASSWORD_CHANGED, new WSSEUserEvent($user));
 	}
 	
 	/**
@@ -216,10 +221,11 @@ class WSSEUserManipulator
 	public function delete(string $username)
 	{
 		$user = $this->findUserByUsernameOrThrowException($username);
+		
 		$this->objectManager->remove($user);
 		$this->objectManager->flush($user);
 		
-		$this->dispatcher->dispatch(Events::USER_DELETED, new UserEvent($user));
+		$this->dispatcher->dispatch(Events::USER_DELETED, new WSSEUserEvent($user));
 	}
 
 	/**
@@ -252,6 +258,7 @@ class WSSEUserManipulator
 		if (false === $this->objectManager->contains($user)) {
 			$this->objectManager->persist($user);
 		}
+		
 		$this->objectManager->flush($user);
 	}
 }

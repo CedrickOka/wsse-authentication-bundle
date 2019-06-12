@@ -1,4 +1,4 @@
-Oka\WSSEAuthenticationBundle\Model\User:
+Oka\WSSEAuthenticationBundle\Model\WSSEUser:
     type: mappedSuperclass
     fields:
         username:

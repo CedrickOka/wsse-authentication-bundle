@@ -12,14 +12,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @author Cedrick Oka Baidai <okacedrick@gmail.com>
  * 
  */
-class WsseFactory implements UserProviderFactoryInterface
+class WSSEFactory implements UserProviderFactoryInterface
 {
 	public function create(ContainerBuilder $container, $id, $config)
 	{
 		$definition = $container->setDefinition($id, new ChildDefinition('oka_wsse_authentication.wsse_user_provider'));
 		$definition->replaceArgument(1, $config['class']);
 		
-		$definition = $container->findDefinition('oka_wsse_authentication.util.wsse_user_manipulator');
+		$definition = $container->setDefinition('oka_wsse_authentication.util.wsse_user_manipulator', new ChildDefinition('oka_wsse_authentication.util.wsse_user_manipulator'));
 		$definition->replaceArgument(2, $config['class']);
 	}
 	
@@ -30,7 +30,7 @@ class WsseFactory implements UserProviderFactoryInterface
 				->scalarNode('class')
 					->cannotBeEmpty()
 					->validate()
-						->ifTrue(function ($class) {
+						->ifTrue(function($class){
 							return !(new \ReflectionClass($class))->implementsInterface(WSSEUserInterface::class);
 						})
 						->thenInvalid('The %s class must implement '.WSSEUserInterface::class.' for using the "oka_wsse" user provider.')

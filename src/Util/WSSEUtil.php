@@ -6,7 +6,7 @@ namespace Oka\WSSEAuthenticationBundle\Util;
  * @author Cedrick Oka Baidai <okacedrick@gmail.com>
  * 
  */
-final class WsseUtil
+final class WSSEUtil
 {
 	/**
 	 * Digests password

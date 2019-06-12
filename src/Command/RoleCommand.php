@@ -32,7 +32,7 @@ abstract class RoleCommand extends UserCommand
 		
 		if (!$input->getArgument('role')) {
 			$question = new Question('Please choose a role:');
-			$question->setValidator(function ($role) {
+			$question->setValidator(function($role){
 				if (true === empty($role)) {
 					throw new \Exception('Role can not be empty');
 				}

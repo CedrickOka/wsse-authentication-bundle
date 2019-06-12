@@ -22,7 +22,7 @@ class PromoteUserCommand extends RoleCommand
 		$this->setName(static::$defaultName)
 			 ->setDescription('Promotes a user by adding a role')
 			 ->setHelp(<<<EOF
-The <info>oka:api:wsse-user-promote</info> command promotes a user by adding a role
+The <info>oka:wsse-authentication:user:promote</info> command promotes a user by adding a role
 
   <info>php %command.full_name% admin ROLE_CUSTOM</info>
 EOF

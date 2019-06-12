@@ -22,7 +22,7 @@ class DisallowIpUserCommand extends AllowedIpCommand
 		$this->setName(static::$defaultName)
 			 ->setDescription('Demotes a user by removing an IP')
 			 ->setHelp(<<<EOF
-The <info>oka:api:wsse-user-disallow-ip</info> command demotes a user by removing an IP
+The <info>oka:wsse-authentication:user:ip-disallow</info> command demotes a user by removing an IP
 
   <info>php %command.full_name% admin 127.0.0.1</info>
 EOF

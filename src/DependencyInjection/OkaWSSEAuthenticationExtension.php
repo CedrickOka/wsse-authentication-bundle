@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
-class OkaApiExtension extends Extension
+class OkaWSSEAuthenticationExtension extends Extension
 {
 	/**
 	 * @var array $doctrineDrivers
@@ -61,7 +61,7 @@ class OkaApiExtension extends Extension
 		}
 		
 		// Configure user provider
-		$userProviderDefinition = new Definition('Oka\WSSEAuthenticationBundle\Security\User\WSSUserProvider');
+		$userProviderDefinition = new Definition('Oka\WSSEAuthenticationBundle\Security\User\WSSEUserProvider');
 		$userProviderDefinition->addArgument(new Reference('oka_wsse_authentication.object_manager'));
 		$userProviderDefinition->addArgument($config['user_class']);
 		$container->setDefinition('oka_wsse_authentication.wsse_user_provider', $userProviderDefinition);
@@ -75,7 +75,7 @@ class OkaApiExtension extends Extension
 		$container->setDefinition('oka_wsse_authentication.wsse_authenticator', $authenticatorDefinition);
 		
 		// Configure user manipulator
-		$userManipulatorDefinition = new Definition('Oka\WSSEAuthenticationBundle\Util\WSSUserManipulator');
+		$userManipulatorDefinition = new Definition('Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator');
 		$userManipulatorDefinition->addArgument(new Reference('oka_wsse_authentication.object_manager'));
 		$userManipulatorDefinition->addArgument(new Reference('event_dispatcher'));
 		$userManipulatorDefinition->addArgument($config['user_class']);

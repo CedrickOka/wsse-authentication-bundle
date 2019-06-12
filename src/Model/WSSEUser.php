@@ -6,7 +6,7 @@ namespace Oka\WSSEAuthenticationBundle\Model;
  * @author Cedrick Oka Baidai <okacedrick@gmail.com>
  * 
  */
-abstract class User implements WSSEUserInterface
+abstract class WSSEUser implements WSSEUserInterface
 {
 	/**
 	 * @var mixed $id
@@ -61,7 +61,7 @@ abstract class User implements WSSEUserInterface
 		return $this->username;
 	}
 	
-	public function setUsername(string $username) :self
+	public function setUsername(string $username) :WSSEUserInterface
 	{
 		$this->username = $username;
 		return $this;
@@ -72,7 +72,7 @@ abstract class User implements WSSEUserInterface
 		return $this->password;
 	}
 	
-	public function setPassword(string $password) :self
+	public function setPassword(string $password) :WSSEUserInterface
 	{
 		$this->password = $password;
 		return $this;
@@ -98,7 +98,7 @@ abstract class User implements WSSEUserInterface
 		return array_unique($roles);
 	}
 	
-	public function addRole(string $role) :self
+	public function addRole(string $role) :WSSEUserInterface
 	{
 		$role = strtoupper($role);
 		
@@ -109,7 +109,7 @@ abstract class User implements WSSEUserInterface
 		return $this;
 	}
 	
-	public function setRoles(array $roles) :self
+	public function setRoles(array $roles) :WSSEUserInterface
 	{
 		$this->roles = [];
 		
@@ -120,7 +120,7 @@ abstract class User implements WSSEUserInterface
 		return $this;
 	}
 	
-	public function removeRole(string $role) :self
+	public function removeRole(string $role) :WSSEUserInterface
 	{
 		$role = strtoupper($role);
 		
@@ -137,13 +137,13 @@ abstract class User implements WSSEUserInterface
 		return $this->enabled;
 	}
 	
-	public function setEnabled(bool $enabled) :self
+	public function setEnabled(bool $enabled) :WSSEUserInterface
 	{
 		$this->enabled = $enabled;
 		return $this;
 	}
 	
-	public function setLocked(bool $locked) :self
+	public function setLocked(bool $locked) :WSSEUserInterface
 	{
 		$this->locked = $locked;
 		return $this;
@@ -176,7 +176,7 @@ abstract class User implements WSSEUserInterface
 		return $this->allowedIps;
 	}
 	
-	public function addAllowedIp(string $ip) :self
+	public function addAllowedIp(string $ip) :WSSEUserInterface
 	{
 		if (false === in_array($ip, $this->allowedIps, true)) {
 			$this->allowedIps[] = $ip;
@@ -184,7 +184,7 @@ abstract class User implements WSSEUserInterface
 		return $this;
 	}
 	
-	public function setAllowedIps(array $allowedIps) :self
+	public function setAllowedIps(array $allowedIps) :WSSEUserInterface
 	{
 		$this->allowedIps = [];
 		foreach ($allowedIps as $ip) {
@@ -193,7 +193,7 @@ abstract class User implements WSSEUserInterface
 		return $this;
 	}
 	
-	public function removeAllowedIp(string $ip) :self
+	public function removeAllowedIp(string $ip) :WSSEUserInterface
 	{
 		if (false !== ($key = array_search($ip, $this->allowedIps, true))) {
 			unset($this->allowedIps[$key]);

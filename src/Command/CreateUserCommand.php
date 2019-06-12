@@ -28,7 +28,7 @@ class CreateUserCommand extends UserCommand
 			 ->addArgument('password', InputArgument::REQUIRED, 'The password')
 			 ->addOption('inactive', null, InputOption::VALUE_NONE, 'Set the user as inactive')
 			 ->setHelp(<<<EOF
-The <info>oka:wsse-authentication:create-user</info> command creates a user:
+The <info>oka:wsse-authentication:user:create</info> command creates a user:
 
   <info>php %command.full_name% admin</info>
 
@@ -54,7 +54,7 @@ EOF
 		
 		if (!$input->getArgument('password')) {
 			$question = new Question('Please choose a password:');
-			$question->setValidator(function ($password) {
+			$question->setValidator(function($password){
 				if (true === empty($password)) {
 					throw new \Exception('Password can not be empty');
 				}

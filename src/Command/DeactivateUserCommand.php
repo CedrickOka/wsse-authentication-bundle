@@ -23,7 +23,7 @@ class DeactivateUserCommand extends UserCommand
 		$this->setName(static::$defaultName)
 			 ->setDescription('Deactivate a user')
 			 ->setHelp(<<<EOF
-The <info>oka:api:wsse-user-deactivate</info> command deactivates a user (will not be able to log in)
+The <info>oka:wsse-authentication:user:deactivate</info> command deactivates a user (will not be able to log in)
 
   <info>php %command.full_name% admin</info>
 EOF

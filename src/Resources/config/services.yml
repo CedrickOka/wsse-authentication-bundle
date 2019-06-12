@@ -6,5 +6,5 @@ services:
         arguments: ['@oka_wsse_authentication.util.wsse_user_manipulator']
 
 # Security
-    oka_wsse_authentication.request_matcher:
-        class: Oka\WSSEAuthenticationBundle\Http\WsseRequestMatcher
+    oka_wsse_authentication.wsse_request_matcher:
+        class: Oka\WSSEAuthenticationBundle\Http\WSSERequestMatcher

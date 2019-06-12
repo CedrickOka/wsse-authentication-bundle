@@ -8,15 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * @author Cedrick Oka Baidai <okacedrick@gmail.com>
  * 
  */
-class WsseUserManipulatorTest extends KernelTestCase
+class WSSEUserManipulatorTest extends KernelTestCase
 {
 	/**
-	 * @var \Oka\WSSEAuthenticationBundle\Util\WsseUserManipulator $userManipulator
+	 * @var \Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator $userManipulator
 	 */
 	protected $userManipulator;
 	
 	/**
-	 * @var \Oka\WSSEAuthenticationBundle\Security\User\WsseUserProvider $userProvider
+	 * @var \Oka\WSSEAuthenticationBundle\Security\User\WSSEUserProvider $userProvider
 	 */
 	protected $userProvider;
 	
@@ -34,7 +34,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::create
+	 * @covers WSSEUserManipulator::create
 	 */
 	public function testCreate()
 	{
@@ -50,7 +50,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::activate
+	 * @covers WSSEUserManipulator::activate
 	 * @depends testCreate
 	 */
 	public function testActivate($username)
@@ -64,7 +64,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::deactivate
+	 * @covers WSSEUserManipulator::deactivate
 	 * @depends testActivate
 	 */
 	public function testDeactivate($username)
@@ -78,7 +78,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::changePassword
+	 * @covers WSSEUserManipulator::changePassword
 	 * @depends testDeactivate
 	 */
 	public function testChangePassword($username)
@@ -92,7 +92,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::addRole
+	 * @covers WSSEUserManipulator::addRole
 	 * @depends testChangePassword
 	 */
 	public function testAddRole($username)
@@ -106,7 +106,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::removeRole
+	 * @covers WSSEUserManipulator::removeRole
 	 * @depends testAddRole
 	 */
 	public function testRemoveRole($username)
@@ -120,7 +120,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::addAllowedIp
+	 * @covers WSSEUserManipulator::addAllowedIp
 	 * @depends testRemoveRole
 	 */
 	public function testAddAllowedIp($username)
@@ -134,7 +134,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::removeAllowedIp
+	 * @covers WSSEUserManipulator::removeAllowedIp
 	 * @depends testAddAllowedIp
 	 */
 	public function testRemoveAllowedIp($username)
@@ -148,7 +148,7 @@ class WsseUserManipulatorTest extends KernelTestCase
 	}
 	
 	/**
-	 * @covers WsseUserManipulator::delete
+	 * @covers WSSEUserManipulator::delete
 	 * @depends testRemoveAllowedIp
 	 * @expectedException \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
 	 */

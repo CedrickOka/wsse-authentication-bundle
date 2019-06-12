@@ -22,7 +22,7 @@ class DemoteUserCommand extends RoleCommand
 		$this->setName(static::$defaultName)
 			 ->setDescription('Demote a user by removing a role')
 			 ->setHelp(<<<EOF
-The <info>oka:api:wsse-user-demote</info> command demotes a user by removing a role
+The <info>oka:wsse-authentication:user:promote</info> command demotes a user by removing a role
 
   <info>php %command.full_name% admin ROLE_CUSTOM</info>
 EOF

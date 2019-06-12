@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\Event;
  * @author Cedrick Oka Baidai <okacedrick@gmail.com>
  * 
  */
-class UserEvent extends Event
+class WSSEUserEvent extends Event
 {
 	/**
 	 * @var WSSEUserInterface $user

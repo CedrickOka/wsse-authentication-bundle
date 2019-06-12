@@ -165,7 +165,7 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	 * {@inheritDoc}
 	 * @see \Symfony\Component\Security\Guard\AuthenticatorInterface::supportsRememberMe()
 	 */
-	public function supportsRememberMe($param)
+	public function supportsRememberMe()
 	{
 		return false;
 	}

@@ -22,7 +22,7 @@ class AllowIpUserCommand extends AllowedIpCommand
 		$this->setName(static::$defaultName)
 			 ->setDescription('Promotes a user by adding an IP')
 			 ->setHelp(<<<EOF
-The <info>oka:api:wsse-user-allow-ip</info> command promotes a user by adding an IP
+The <info>oka:wsse-authentication:user:ip-allow</info> command promotes a user by adding an IP
 
   <info>php %command.full_name% admin 127.0.0.1</info>
 EOF

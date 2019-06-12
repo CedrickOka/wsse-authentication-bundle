@@ -42,7 +42,7 @@ abstract class UserCommand extends Command
 	{
 		if (!$input->getArgument('username')) {
 			$question = new Question('Please choose a username:');
-			$question->setValidator(function ($username) {
+			$question->setValidator(function($username){
 				if (true === empty($username)) {
 					throw new \Exception('Username can not be empty');
 				}
