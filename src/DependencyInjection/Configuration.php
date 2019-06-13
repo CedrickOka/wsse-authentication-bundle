@@ -17,7 +17,13 @@ class Configuration implements ConfigurationInterface
 	public function getConfigTreeBuilder()
 	{
 		$treeBuilder = new TreeBuilder('oka_wsse_authentication');
-		$rootNode = $treeBuilder->getRootNode();
+		
+		if (true === method_exists($treeBuilder, 'getRootNode')) {
+			$rootNode = $treeBuilder->getRootNode();
+		} else {
+			// BC layer for symfony/config 4.1 and older
+			$rootNode = $treeBuilder->root('acl');
+		}
 		
 		$rootNode
 				->addDefaultsIfNotSet()
@@ -32,8 +38,8 @@ class Configuration implements ConfigurationInterface
 					->scalarNode('model_manager_name')->defaultNull()->end()
 					
 					->scalarNode('user_class')
-						->cannotBeEmpty()
 						->defaultNull()
+						->setDeprecated()
 					->end()
 					
 					->scalarNode('realm')->defaultValue('Secure Area')->end()

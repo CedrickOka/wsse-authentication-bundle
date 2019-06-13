@@ -3,7 +3,7 @@ namespace Oka\WSSEAuthenticationBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
-use Oka\WSSEAuthenticationBundle\DependencyInjection\Security\UserProvider\WSSEFactory;
+use Oka\WSSEAuthenticationBundle\DependencyInjection\Security\UserProvider\WSSEUserProviderFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -21,7 +21,7 @@ class OkaWSSEAuthenticationBundle extends Bundle
 		
 		/** @var \Symfony\Component\DependencyInjection\Extension\ExtensionInterface $extension */
 		$extension = $container->getExtension('security');
-		$extension->addUserProviderFactory(new WSSEFactory());	
+		$extension->addUserProviderFactory(new WSSEUserProviderFactory());	
 	}
 	
 	/**
