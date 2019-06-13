@@ -1,7 +1,6 @@
 <?php
 namespace Oka\WSSEAuthenticationBundle\DependencyInjection;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Oka\WSSEAuthenticationBundle\Security\Authorization\Voter\AllowedIpsVoter;
 use Oka\WSSEAuthenticationBundle\Security\Guard\WSSEAuthenticator;
 use Oka\WSSEAuthenticationBundle\Security\Nonce\Storage\Handler\FileNonceHandler;
@@ -49,10 +48,11 @@ class OkaWSSEAuthenticationExtension extends Extension
 		$container->setParameter('oka_wsse_authentication.backend_type_'.$config['db_driver'], true);
 		$container->setParameter('oka_wsse_authentication.model_manager_name', $config['model_manager_name']);
 		
-		$container->setAlias('oka_wsse_authentication.doctrine_registry', new Alias(self::$doctrineDrivers[$config['db_driver']]['registry'], false));
-		$objectManagerDefinition = new Definition(ObjectManager::class, [$config['model_manager_name']]);
-		$objectManagerDefinition->setFactory([new Reference('oka_wsse_authentication.doctrine_registry'), 'getManager']);
-		$container->setDefinition('oka_wsse_authentication.object_manager', $objectManagerDefinition);
+		if (true === $container->hasDefinition(self::$doctrineDrivers[$config['db_driver']]['registry'])) {
+			$container->setAlias('oka_wsse_authentication.doctrine_registry', new Alias(self::$doctrineDrivers[$config['db_driver']]['registry'], false));
+			$objectManagerDefinition = $container->getDefinition('oka_wsse_authentication.object_manager');
+			$objectManagerDefinition->setFactory([new Reference('oka_wsse_authentication.doctrine_registry'), 'getManager']);
+		}
 		
 		// Configure Nonce
 		$nonceHandlerId = $config['nonce']['handler_id'];

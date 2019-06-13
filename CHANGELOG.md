@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 1.0.5 (2019-06-13)
+
+* Fix bug on symfony 3.4.
+
 #### 1.0.4 (2019-06-13)
 
 * Fix bug on symfony 3.4.
