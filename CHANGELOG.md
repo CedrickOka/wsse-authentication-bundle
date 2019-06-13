@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 1.0.32 (2019-06-13)
+
+* Fixed bug.
+
 #### 1.0.2 (2019-06-13)
 
 * Fix BC layer for symfony/config 4.1 and older.

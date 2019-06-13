@@ -3,9 +3,9 @@ namespace Oka\WSSEAuthenticationBundle\DependencyInjection\Security\UserProvider
 
 use Oka\WSSEAuthenticationBundle\Model\WSSEUserInterface;
 use Oka\WSSEAuthenticationBundle\Security\User\WSSEUserProvider;
-use Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\UserProvider\UserProviderFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -22,14 +22,13 @@ class WSSEUserProviderFactory implements UserProviderFactoryInterface
 		// Configure user provider
 		$userProviderDefinition = new Definition(WSSEUserProvider::class);
 		$userProviderDefinition->addArgument(new Reference('oka_wsse_authentication.object_manager'));
-		$userProviderDefinition->addArgument($config['user_class']);
-		$container->setDefinition('oka_wsse_authentication.wsse_user_provider', $userProviderDefinition);
+		$userProviderDefinition->addArgument($config['class']);
+		$container->setDefinition($id, $userProviderDefinition);
 		
 		// Configure user manipulator
-		$userManipulatorDefinition = new Definition(WSSEUserManipulator::class);
-		$userManipulatorDefinition->addArgument(new Reference('oka_wsse_authentication.object_manager'));
-		$userManipulatorDefinition->addArgument(new Reference('event_dispatcher'));
-		$userManipulatorDefinition->addArgument($config['user_class']);
+		$userManipulatorDefinition = new ChildDefinition('oka_wsse_authentication.util.wsse_user_manipulator');
+		$userManipulatorDefinition->replaceArgument(0, new Reference('oka_wsse_authentication.object_manager'));
+		$userManipulatorDefinition->replaceArgument(2, $config['class']);
 		$userManipulatorDefinition->setPublic(true);
 		$container->setDefinition('oka_wsse_authentication.util.wsse_user_manipulator', $userManipulatorDefinition);
 	}
