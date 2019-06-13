@@ -6,6 +6,10 @@ services:
         arguments: ['@oka_wsse_authentication.util.wsse_user_manipulator']
 
 # Security
+    oka_wsse_authentication.object_manager:
+        class: Doctrine\Common\Persistence\ObjectManager
+
+# Security
     oka_wsse_authentication.wsse_request_matcher:
         class: Oka\WSSEAuthenticationBundle\Http\WSSERequestMatcher
 
