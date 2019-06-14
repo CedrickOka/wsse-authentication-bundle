@@ -5,15 +5,6 @@ services:
         tags: ['console.command']
         arguments: ['@?oka_wsse_authentication.util.wsse_user_manipulator']
 
-## Factory
-#    oka_wsse_authentication.object_manager:
-#        class: Doctrine\Common\Persistence\ObjectManager
-
 # Security
     oka_wsse_authentication.wsse_request_matcher:
         class: Oka\WSSEAuthenticationBundle\Http\WSSERequestMatcher
-
-## Util
-#    oka_wsse_authentication.util.wsse_user_manipulator:
-#        class: Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator
-#        arguments: ['', '@event_dispatcher', '']

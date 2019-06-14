@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator;
+use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -51,7 +52,7 @@ class OkaWSSEAuthenticationExtension extends Extension
 		$container->setParameter('oka_wsse_authentication.user_class', $config['user_class']);
 		
 		$container->setAlias('oka_wsse_authentication.doctrine_registry', new Alias(self::$doctrineDrivers[$config['db_driver']]['registry'], false));
-		$objectManagerDefinition = $container->getDefinition('oka_wsse_authentication.object_manager');
+		$objectManagerDefinition = new Definition(ObjectManager::class);
 		$objectManagerDefinition->setFactory([new Reference('oka_wsse_authentication.doctrine_registry'), 'getManager']);
 		
 		if (true === $container->hasDefinition(self::$doctrineDrivers[$config['db_driver']]['registry'])) {
