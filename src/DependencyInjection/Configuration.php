@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
 			$rootNode = $treeBuilder->getRootNode();
 		} else {
 			// BC layer for symfony/config 4.1 and older
-			$rootNode = $treeBuilder->root('acl');
+			$rootNode = $treeBuilder->root('oka_wsse_authentication');
 		}
 		
 		$rootNode

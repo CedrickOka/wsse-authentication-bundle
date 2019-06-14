@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 1.1.2 (2019-06-14)
+
+* Fix root configuration name symfony 4.1 and older.
+
 #### 1.1.1 (2019-06-14)
 
 * Fix composer php version.
