@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 1.1.3 (2019-06-14)
+
+* Fix wsse user provider bad dependency.
+
 #### 1.1.2 (2019-06-14)
 
 * Fix root configuration name symfony 4.1 and older.

@@ -53,6 +53,7 @@ class OkaWSSEAuthenticationExtension extends Extension
 		$container->setAlias('oka_wsse_authentication.doctrine_registry', new Alias(self::$doctrineDrivers[$config['db_driver']]['registry'], false));
 		$objectManagerDefinition = new Definition(ObjectManager::class);
 		$objectManagerDefinition->setFactory([new Reference('oka_wsse_authentication.doctrine_registry'), 'getManager']);
+		$container->setDefinition('oka_wsse_authentication.object_manager', $objectManagerDefinition);
 		
 		if (true === $container->hasDefinition(self::$doctrineDrivers[$config['db_driver']]['registry']) && null !== $config['user_class']) {
 			$userManipulatorDefinition = new Definition(WSSEUserManipulator::class);
