@@ -1,29 +1,25 @@
-**Getting Started With OkaWSSEAuthenticationBundle**
-=====================================
+# Getting Started With OkaWSSEAuthenticationBundle
 
 This bundle provides an WSSE authenticator system.
 
-Prerequisites
-=============
+## Prerequisites
 
 The OkaWSSEAuthenticationBundle has the following requirements:
 
  - PHP 7.1+
  - Symfony 3.4+
 
-Installation
-============
+## Installation
 
 Installation is a quick (I promise!) 5 step process:
 
 1. Download OkaWSSEAuthenticationBundle
-2. Enable the Bundle
-3. Create your WsseUser class
+2. Register the Bundle
+3. Create your WSSEUser class
 4. Configure the Bundle
 5. Update your database schema
 
-Step 1: Download the Bundle
----------------------------
+### Step 1: Download the Bundle
 
 Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
@@ -36,15 +32,14 @@ This command requires you to have Composer installed globally, as explained
 in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
 of the Composer documentation.
 
-Step 2: Enable the Bundle
--------------------------
+### Step 2: Register the Bundle
 
-Then, enable the bundle by adding it to the list of registered bundles
+**Symfony 3 Version**
+
+Then, register the bundle by adding it to the list of registered bundles
 in the `app/AppKernel.php` file of your project:
 
 ```php
-// app/AppKernel.php
-
 // ...
 class AppKernel extends Kernel
 {
@@ -62,18 +57,29 @@ class AppKernel extends Kernel
 }
 ```
 
-Step 3: Create your WsseUser class
-----------------------------------
+**Symfony 4 Version**
 
-The goal of this bundle is to  persist some `WsseUser` class to a database (MySql). 
-Your first job, then, is to create the `WsseUser` class for you application. 
+Then, register the bundle by adding it to the list of registered bundles
+in the `config/bundles.php` file of your project (Flex did it automatically):
+
+```php
+return [
+    //...
+    Oka\WSSEAuthenticationBundle\OkaWSSEAuthenticationBundle::class => ['all' => true],
+]
+```
+
+### Step 3: Create your WSSEUser class
+
+The goal of this bundle is to  persist some `WSSEUser` class to a database (MySql). 
+Your first job, then, is to create the `WSSEUser` class for you application. 
 This class can look and act however you want: add any
-properties or methods you find useful. This is *your* `WsseUser` class.
+properties or methods you find useful. This is *your* `WSSEUser` class.
 
 The bundle provides base classes which are already mapped for most fields
 to make it easier to create your entity. Here is how you use it:
 
-1. Extend the base `WsseUser` class (from the `Model` folder)
+1. Extend the base `WSSEUser` class (from the `Model` folder)
 2. Map the `id` field. It must be protected as it is inherited from the parent class.
 
 **Warning:**
@@ -81,28 +87,28 @@ to make it easier to create your entity. Here is how you use it:
 > When you extend from the mapped superclass provided by the bundle, don't
 > redefine the mapping for the other fields as it is provided by the bundle.
 
-Your `WsseUser` class can live inside any bundle in your application. For example,
+Your `WSSEUser` class can live inside any bundle in your application. For example,
 if you work at "Acme" company, then you might create a bundle called `AcmeAuthenticationBundle`
-and place your `WsseUser` class in it.
+and place your `WSSEUser` class in it.
 
-In the following sections, you'll see examples of how your `WsseUser` class should
+In the following sections, you'll see examples of how your `WSSEUser` class should
 look, depending on how you're storing your entities.
 
 **Note:**
 
 > The doc uses a bundle named `AcmeAuthenticationBundle`. If you want to use the same
 > name, you need to register it in your kernel. But you can of course place
-> your `WsseUser` class in the bundle you want.
+> your `WSSEUser` class in the bundle you want.
 
 **Warning:**
 
-> If you override the __construct() method in your WsseUser class, be sure
-> to call parent::__construct(), as the base WsseUser class depends on
+> If you override the __construct() method in your WSSEUser class, be sure
+> to call parent::__construct(), as the base WSSEUser class depends on
 > this to initialize some fields.
 
-#### Doctrine ORM WsseUser class
+#### Doctrine ORM WSSEUser class
 
-you must persisting your entity via the Doctrine ORM, then your `WsseUser` class
+you must persisting your entity via the Doctrine ORM, then your `WSSEUser` class
 should live in the `Entity` namespace of your bundle and look like this to
 start:
 
@@ -110,18 +116,18 @@ start:
 
 ```php
 <?php
-// src/Acme/AuthenticationBundle/Entity/WsseUser.php
+// src/Acme/AuthenticationBundle/Entity/WSSEUser.php
 
 namespace Acme\AuthenticationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oka\WSSEAuthenticationBundle\Model\User;
+use Oka\WSSEAuthenticationBundle\Model\WSSEUser as BaseWSSEUser;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="wsse_user")
  */
-class WsseUser extends User
+class WSSEUser extends BaseWSSEUser
 {
     /**
      * @ORM\Id
@@ -145,16 +151,16 @@ If you use yml to configure Doctrine you must add two files. The Entity and the 
 
 ```php
 <?php
-// src/Acme/AuthenticationBundle/Entity/WsseUser.php
+// src/Acme/AuthenticationBundle/Entity/WSSEUser.php
 
 namespace Acme\AuthenticationBundle\Entity;
 
-use Oka\WSSEAuthenticationBundle\Model\User;
+use Oka\WSSEAuthenticationBundle\Model\WSSEUser as BaseWSSEUser;
 
 /**
- * WsseUser
+ * WSSEUser
  */
-class WsseUser extends User
+class WSSEUser extends BaseWSSEUser
 {
 	public function __construct()
 	{
@@ -166,8 +172,8 @@ class WsseUser extends User
 ```
 
 ```yaml
-# src/Acme/AuthenticationBundle/Resources/config/doctrine/WsseUser.orm.yml
-Acme\AuthenticationBundle\Entity\WsseUser:
+# src/Acme/AuthenticationBundle/Resources/config/doctrine/WSSEUser.orm.yml
+Acme\AuthenticationBundle\Entity\WSSEUser:
     type: entity
     table: wsse_user
     id:
@@ -177,33 +183,32 @@ Acme\AuthenticationBundle\Entity\WsseUser:
                 strategy: AUTO
 ```
 
-Step 4: Configure the Bundle
-----------------------------
+### Step 4: Configure the Bundle
 
-Add the following configuration to your `config.yml`.
+Add the following configuration to your `config/packages/oka_wsse_authentication.yaml`.
 
 ``` yaml
-# app/config/config.yml
+# config/packages/oka_wsse_authentication.yaml
 oka_wsse_authentication:
     db_driver: orm
     model_manager_name: null
-    user_class: Acme\AuthenticationBundle\Entity\WsseUser
+    user_class: Acme\AuthenticationBundle\Entity\WSSEUser
     realm: 'Secure Area'
     nonce:
         lifetime: 300
     enabled_allowed_ips_voter: true # Enables the voter that allows access to requests at only certain ips allocated for the current authenticated client
 ```
 
-Add the following configuration to your `security.yml`.
+Add the following configuration to your `config/packages/security.yaml`.
 
 ``` yaml
-# app/config/security.yml
+# config/packages/security.yaml
 security:
-# Add `wsse_user_provider` in providers configuration section
+# Add `wsse_user_provider` in providers configuration section and using the "oka_wsse" user provider
     providers:
         wsse_user_provider:
             oka_wsse:
-                class: Acme\AuthenticationBundle\Entity\WsseUser
+                class: Acme\AuthenticationBundle\Entity\WSSEUser
 
 # Add `wsse` in firewalls configuration section
     firewalls:
@@ -214,44 +219,35 @@ security:
             provider: wsse_user_provider
             guard:
                 authenticators: [oka_wsse_authentication.wsse_authenticator]
-                
-# To activate the wsse voter which control user access by ip 
+
 # you must define at least one entry in your `access_control`
     access_control:
-      - { path: '^/v1/rest', host: 'api.exemple.com', roles: ROLE_API_USER }
+      - { path: '^/', roles: ROLE_API_USER }
 
 # Define strategy decision like `unanimous` for allows wsse voter has denied access or abstain
+# then the wsse voter which control user access by ip is enabled 
     access_decision_manager:
         strategy: unanimous
 ```
 
-``` yaml
-# app/config/security.yml
-security:
-    access_control:
-      - { path: '^/v1/rest', host: 'api.exemple.com', roles: ROLE_API_USER }
-```
-
-Step 5: Update your database schema
------------------------------------
+### Step 5: Update your database schema
 
 Now that the bundle is configured, the last thing you need to do is update your
-database schema because you have added a new entity, the `WsseUser` class which you
+database schema because you have added a new entity, the `WSSEUser` class which you
 created in Step 4.
 
 Run the following command.
 
 ``` bash
-$ php app/console doctrine:schema:update --force
+$ php bin/console doctrine:schema:update --force
 ```
 
-You now can access at the index page `http://app.com/app_dev.php/`!
+You now can access at the index page `http://acme.com/`!
 
-How use this?
-=============
+## How use this?
 
 Now that the bundle is installed
 
 ```
-curl -i http://app.com/app_dev.php -X GET -H 'Authorization: UsernameToken Username="admin", PasswordDigest="53dGT2c83M446zUJfpr9lanpeY0=", Nonce="MTM3OGM2YzJlZDYyNDE5Ng==", Created="2019-03-30T09:52:33Z"'
+curl -i http://acme.com/ -X GET -H 'Authorization: UsernameToken Username="admin", PasswordDigest="53dGT2c83M446zUJfpr9lanpeY0=", Nonce="MTM3OGM2YzJlZDYyNDE5Ng==", Created="2019-03-30T09:52:33Z"'
 ```

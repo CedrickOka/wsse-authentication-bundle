@@ -58,7 +58,7 @@ class Nonce implements NonceInterface
 	 * {@inheritDoc}
 	 * @see \Oka\WSSEAuthenticationBundle\Security\Nonce\NonceInterface::getId()
 	 */
-	public function getId()
+	public function getId() :string
 	{
 		return $this->id;
 	}
@@ -67,7 +67,7 @@ class Nonce implements NonceInterface
 	 * {@inheritDoc}
 	 * @see \Oka\WSSEAuthenticationBundle\Security\Nonce\NonceInterface::getIssuedAt()
 	 */
-	public function getIssuedAt()
+	public function getIssuedAt() :int
 	{
 		if ($this->savedHandler->isActive() && !$this->started) {
 			$this->start();
@@ -86,7 +86,7 @@ class Nonce implements NonceInterface
 	 * {@inheritDoc}
 	 * @see \Oka\WSSEAuthenticationBundle\Security\Nonce\NonceInterface::isAlreadyUsed()
 	 */
-	public function isAlreadyUsed($time, $lifetime)
+	public function isAlreadyUsed(int $time, int $lifetime) :bool
 	{
 		if ($issuedAt = $this->getIssuedAt()) {
 			return ($issuedAt + $lifetime) > $time;
@@ -99,7 +99,7 @@ class Nonce implements NonceInterface
 	 * {@inheritDoc}
 	 * @see \Oka\WSSEAuthenticationBundle\Security\Nonce\NonceInterface::save()
 	 */
-	public function save($timestamp = null)
+	public function save(int $timestamp = null)
 	{
 		if (!$this->started) {
 			throw new \RuntimeException('Failed to save the nonce because the nonce storage has not been started.');

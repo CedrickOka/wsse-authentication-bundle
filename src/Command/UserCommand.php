@@ -20,7 +20,7 @@ abstract class UserCommand extends Command
 	 */
 	protected $userManipulator;
 	
-	public function __construct(WSSEUserManipulator $userManipulator)
+	public function __construct(WSSEUserManipulator $userManipulator = null)
 	{
 		parent::__construct();
 		
@@ -33,6 +33,17 @@ abstract class UserCommand extends Command
 	protected function configure()
 	{
 		$this->addArgument('username', InputArgument::REQUIRED, 'The username');
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function initialize(InputInterface $input, OutputInterface $output)
+	{
+		if (null === $this->userManipulator) {
+			$output->writeln('<error>Install the bundles "doctrine/doctrine-bundle" or "doctrine/mongodb-odm-bundle" for to be able to use this command.</error>');
+			exit();
+		}
 	}
 	
 	/**

@@ -11,12 +11,12 @@ interface NonceInterface
 	/**
 	 * @return string The nonce ID
 	 */
-	public function getId();
+	public function getId() :string;
 	
 	/**
 	 * @return int The timestamp at which the nonce was created
 	 */
-	public function getIssuedAt();
+	public function getIssuedAt() :int;
 	
 	/**
 	 * Indicates whether the nonce is already registered in the nonce storage
@@ -26,12 +26,12 @@ interface NonceInterface
 	 * @param int $lifetime The life time
 	 * @return bool
 	 */
-	public function isAlreadyUsed($time, $lifetime);
+	public function isAlreadyUsed(int $time, int $lifetime) :bool;
 	
 	/**
 	 * Save the nonce in the storage
 	 * 
 	 * @param int $timestamp
 	 */
-	public function save($timestamp = null);
+	public function save(int $timestamp = null);
 }

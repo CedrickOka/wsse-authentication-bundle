@@ -3,6 +3,7 @@ namespace Oka\WSSEAuthenticationBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Oka\WSSEAuthenticationBundle\Model\WSSEUserInterface;
 
 /**
  * This is the class that validates and merges configuration from your app/config files.
@@ -39,7 +40,12 @@ class Configuration implements ConfigurationInterface
 					
 					->scalarNode('user_class')
 						->defaultNull()
-						->setDeprecated()
+						->validate()
+							->ifTrue(function($class){
+								return null !== $class && !(new \ReflectionClass($class))->implementsInterface(WSSEUserInterface::class);
+							})
+							->thenInvalid('The %s class must implement '.WSSEUserInterface::class.'.')
+						->end()
 					->end()
 					
 					->scalarNode('realm')->defaultValue('Secure Area')->end()

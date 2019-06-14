@@ -15,19 +15,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class WSSEUserProvider implements UserProviderInterface
 {
 	/**
-	 * @var \Doctrine\Common\Persistence\ObjectManager $om
-	 */
-	protected $om;
-	
-	/**
 	 * @var \Doctrine\Common\Persistence\ObjectRepository $or
 	 */
 	protected $or;
-	
-	/**
-	 * @var string $class
-	 */
-	protected $class;
 	
 	/**
 	 * Constructor for WSSE authetication User provider 
@@ -37,10 +27,6 @@ class WSSEUserProvider implements UserProviderInterface
 	 */
 	public function __construct(ObjectManager $om, $class)
 	{
-		$metadata = $om->getClassMetadata($class);
-		
-		$this->om = $om;
-		$this->class = $metadata->getName();
 		$this->or = $om->getRepository($class);
 	}
 	
@@ -84,7 +70,7 @@ class WSSEUserProvider implements UserProviderInterface
 	{
 		$class = get_class($user);
 		
-		if (!$this->supportsClass($class)) {
+		if (false === $this->supportsClass($class)) {
 			throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
 		}
 		

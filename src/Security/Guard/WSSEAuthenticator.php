@@ -44,7 +44,7 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	 */
 	private $realm;
 	
-	public function __construct(NonceHandlerInterface $nonceHandler, EventDispatcherInterface $dispatcher, $lifetime, $realm = 'Secure Area')
+	public function __construct(NonceHandlerInterface $nonceHandler, EventDispatcherInterface $dispatcher, $lifetime, $realm)
 	{
 		$this->nonceHandler = $nonceHandler;
 		$this->dispatcher = $dispatcher;
@@ -138,9 +138,7 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	 */
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
 	{
-		$response = new JsonResponse(['code' => 401, 'message' => $exception->getMessage()], 401, ['WWW-Authenticate' => sprintf('WSSE realm="%s", profile="UsernameToken"', $this->realm)]);
-		$event = new AuthenticationFailureEvent($exception, $response);
-		
+		$event = new AuthenticationFailureEvent($exception, $this->createAuthenticationFailureResponse($exception->getMessage()));
 		$this->dispatcher->dispatch($event, Events::AUTHENTICATION_FAILURE);
 		
 		return $event->getResponse();
@@ -152,10 +150,8 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	 */
 	public function start(Request $request, AuthenticationException $authException = null)
 	{
-		$exception = new TokenNotFoundException('No token could be found', 0, $authException);
-		$response = new JsonResponse(['code' => 401, 'message' => $exception->getMessage()], 401, ['WWW-Authenticate' => sprintf('WSSE realm="%s", profile="UsernameToken"', $this->realm)]);
-		$event = new AuthenticationFailureEvent($exception, $response);
-		
+		$exception = new TokenNotFoundException('No token could be found', 401, $authException);
+		$event = new AuthenticationFailureEvent($exception, $this->createAuthenticationFailureResponse($exception->getMessage()));
 		$this->dispatcher->dispatch($event, Events::AUTHENTICATION_FAILURE);
 		
 		return $event->getResponse();
@@ -168,5 +164,12 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	public function supportsRememberMe()
 	{
 		return false;
+	}
+	
+	protected function createAuthenticationFailureResponse($message, $statusCode = 401, array $headers = [])
+	{
+		$headers['WWW-Authenticate'] = sprintf('WSSE realm="%s", profile="UsernameToken"', $this->realm);
+		
+		return new JsonResponse(['code' => $statusCode, 'message' => $message], $statusCode, $headers);
 	}
 }

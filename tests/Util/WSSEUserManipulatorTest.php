@@ -11,26 +11,21 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class WSSEUserManipulatorTest extends KernelTestCase
 {
 	/**
-	 * @var \Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator $userManipulator
-	 */
-	protected $userManipulator;
-	
-	/**
 	 * @var \Oka\WSSEAuthenticationBundle\Security\User\WSSEUserProvider $userProvider
 	 */
 	protected $userProvider;
+	
+	/**
+	 * @var \Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator $userManipulator
+	 */
+	protected $userManipulator;
 	
 	public function setUp()
 	{
 		self::bootKernel();
 		
-		$this->userManipulator = static::$kernel->getContainer()->get('oka_wsse_authentication.util.wsse_user_manipulator');
 		$this->userProvider = static::$kernel->getContainer()->get('oka_wsse_authentication.wsse_user_provider');
-	}
-	
-	public function tearDown()
-	{
-		parent::tearDown();
+		$this->userManipulator = static::$kernel->getContainer()->get('oka_wsse_authentication.util.wsse_user_manipulator');
 	}
 	
 	/**
