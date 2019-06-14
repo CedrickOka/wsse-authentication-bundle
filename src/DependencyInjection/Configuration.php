@@ -48,7 +48,9 @@ class Configuration implements ConfigurationInterface
 						->end()
 					->end()
 					
-					->scalarNode('realm')->defaultValue('Secure Area')->end()
+					->scalarNode('realm')
+						->defaultValue('Secure Area')
+					->end()
 					
 					->arrayNode('nonce')
 						->addDefaultsIfNotSet()

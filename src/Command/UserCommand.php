@@ -41,7 +41,7 @@ abstract class UserCommand extends Command
 	protected function initialize(InputInterface $input, OutputInterface $output)
 	{
 		if (null === $this->userManipulator) {
-			$output->writeln('<error>Install the bundles "doctrine/doctrine-bundle" or "doctrine/mongodb-odm-bundle" for to be able to use this command.</error>');
+			$output->writeln('<error>Install the bundles "doctrine/doctrine-bundle" or "doctrine/mongodb-odm-bundle" and configure "oka_wsse_authentication.user_class" for to be able to use this command.</error>');
 			exit();
 		}
 	}

@@ -49,31 +49,24 @@ class OkaWSSEAuthenticationExtension extends Extension
 		// Doctrine configuration
 		$container->setParameter('oka_wsse_authentication.backend_type_'.$config['db_driver'], true);
 		$container->setParameter('oka_wsse_authentication.model_manager_name', $config['model_manager_name']);
-		$container->setParameter('oka_wsse_authentication.user_class', $config['user_class']);
 		
 		$container->setAlias('oka_wsse_authentication.doctrine_registry', new Alias(self::$doctrineDrivers[$config['db_driver']]['registry'], false));
 		$objectManagerDefinition = new Definition(ObjectManager::class);
 		$objectManagerDefinition->setFactory([new Reference('oka_wsse_authentication.doctrine_registry'), 'getManager']);
 		
-		if (true === $container->hasDefinition(self::$doctrineDrivers[$config['db_driver']]['registry'])) {
-// 			$container->setAlias('oka_wsse_authentication.doctrine_registry', new Alias(self::$doctrineDrivers[$config['db_driver']]['registry'], false));
-// 			$objectManagerDefinition = $container->getDefinition('oka_wsse_authentication.object_manager');
-// 			$objectManagerDefinition->setFactory([new Reference('oka_wsse_authentication.doctrine_registry'), 'getManager']);
-			
-			if (null !== $config['user_class']) {
-				$userManipulatorDefinition = new Definition(WSSEUserManipulator::class);
-				$userManipulatorDefinition->addArgument(new Reference('oka_wsse_authentication.object_manager'));
-				$userManipulatorDefinition->addArgument(new Reference('event_dispatcher'));
-				$userManipulatorDefinition->addArgument($config['user_class']);
-				$userManipulatorDefinition->setPublic(true);
-				$container->setDefinition('oka_wsse_authentication.util.wsse_user_manipulator', $userManipulatorDefinition);
-			}
+		if (true === $container->hasDefinition(self::$doctrineDrivers[$config['db_driver']]['registry']) && null !== $config['user_class']) {
+			$userManipulatorDefinition = new Definition(WSSEUserManipulator::class);
+			$userManipulatorDefinition->addArgument(new Reference('oka_wsse_authentication.object_manager'));
+			$userManipulatorDefinition->addArgument(new Reference('event_dispatcher'));
+			$userManipulatorDefinition->addArgument($config['user_class']);
+			$userManipulatorDefinition->setPublic(true);
+			$container->setDefinition('oka_wsse_authentication.util.wsse_user_manipulator', $userManipulatorDefinition);
 		}
 		
 		// Configure Nonce		
 		if (null === ($nonceHandlerId = $config['nonce']['handler_id'])) {
 			$nonceHandlerId = 'oka_wsse_authentication.nonce.file_handler';
-			$savePath = $config['nonce']['save_path'] ?: $container->getParameter('kernel.cache_dir') . '/oka_security/nonces';
+			$savePath = $config['nonce']['save_path'] ?: $container->getParameter('kernel.cache_dir') . '/oka_wsse/nonces';
 			$container->setDefinition($nonceHandlerId, new Definition(FileNonceHandler::class, [$savePath]));
 		}
 		
