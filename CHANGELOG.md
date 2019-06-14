@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 1.1.0 (2019-06-14)
+
+* Fix doctrine registry dependency.
+
 #### 1.0.5 (2019-06-13)
 
 * Fix bug on symfony 3.4.
