@@ -1,7 +1,7 @@
-OkaApiBundle
-============
+OkaWSSEAuthenticationBundle
+===========================
 
-This bundle provides a set of components for the design of a REST API.
+This bundle provides a WSSE authentication provider.
 
 [![Latest Stable Version](https://poser.pugx.org/coka/wsse-authentication-bundle/v/stable)](https://packagist.org/packages/coka/wsse-authentication-bundle)
 [![Total Downloads](https://poser.pugx.org/coka/wsse-authentication-bundle/downloads)](https://packagist.org/packages/coka/wsse-authentication-bundle)

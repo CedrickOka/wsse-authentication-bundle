@@ -6,7 +6,7 @@ This bundle provides an WSSE authenticator system.
 
 The OkaWSSEAuthenticationBundle has the following requirements:
 
- - PHP 7.1+
+ - PHP 7.2+
  - Symfony 3.4+
 
 ## Installation
