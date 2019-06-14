@@ -56,6 +56,6 @@
 		}
 	},
 	"support" : {
-		"docs" : "https://github.com/CedrickOka/wsse-authentication/blob/master/src/Resources/doc/index.md"
+		"docs" : "https://github.com/CedrickOka/wsse-authentication-bundle/blob/master/src/Resources/doc/index.md"
 	}
 }

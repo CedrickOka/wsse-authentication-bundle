@@ -9,7 +9,7 @@ This bundle provides a set of components for the design of a REST API.
 [![License](https://poser.pugx.org/coka/wsse-authentication-bundle/license)](https://packagist.org/packages/coka/wsse-authentication-bundle)
 [![Monthly Downloads](https://poser.pugx.org/coka/wsse-authentication-bundle/d/monthly)](https://packagist.org/packages/coka/wsse-authentication-bundle)
 [![Daily Downloads](https://poser.pugx.org/coka/wsse-authentication-bundle/d/daily)](https://packagist.org/packages/coka/wsse-authentication-bundle)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/6a4e52b4-f25c-46e2-b73d-f4f08dbd8a18/mini.png)](https://insight.sensiolabs.com/projects/6a4e52b4-f25c-46e2-b73d-f4f08dbd8a18)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/f59a4801-bab9-4032-96c1-e246e9a4ecda/mini.png)](https://insight.sensiolabs.com/projects/f59a4801-bab9-4032-96c1-e246e9a4ecda)
 
 Latest updates
 --------------

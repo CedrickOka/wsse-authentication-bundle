@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 1.1.1 (2019-06-14)
+
+* Fix composer php version.
+
 #### 1.1.0 (2019-06-14)
 
 * Fix doctrine registry dependency.
