@@ -1,10 +1,11 @@
 <?php
-namespace Oka\WSSEAuthenticationBundle\Util;
+namespace Oka\WSSEAuthenticationBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oka\WSSEAuthenticationBundle\Events;
 use Oka\WSSEAuthenticationBundle\Event\WSSEUserEvent;
 use Oka\WSSEAuthenticationBundle\Model\WSSEUserInterface;
+use Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -14,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Cedrick Oka Baidai <okacedrick@gmail.com>
  * 
  */
-class WSSEUserManipulator
+class WSSEUserManipulator implements WSSEUserManipulatorInterface
 {
 	/**
 	 * @var \Doctrine\Common\Persistence\ObjectManager $objectManager
@@ -40,7 +41,7 @@ class WSSEUserManipulator
 	 * WSSEUserManipulator constructor.
 	 * 
 	 * @param ObjectManager				$objectManager
-	 * @param EventDispatcherInterface	$dispatcher
+	 * @param EventDispatcherInterface 	$dispatcher
 	 * @param string					$class
 	 */
 	public function __construct(ObjectManager $objectManager, EventDispatcherInterface $dispatcher, $class)
@@ -54,14 +55,8 @@ class WSSEUserManipulator
 	}
 
 	/**
-	 * Creates a user and returns it.
-	 * 
-	 * @param string $username
-	 * @param string $password
-	 * @param bool   $active
-	 * @param array  $roles
-	 * 
-	 * @return \Oka\WSSEAuthenticationBundle\Model\WSSEUserInterface
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::create()
 	 */
 	public function create(string $username, string $password, bool $active, array $roles = []) :WSSEUserInterface
 	{
@@ -80,9 +75,8 @@ class WSSEUserManipulator
 	}
 	
 	/**
-	 * Activates the given user.
-	 * 
-	 * @param string $username
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::activate()
 	 */
 	public function activate(string $username)
 	{
@@ -95,9 +89,8 @@ class WSSEUserManipulator
 	}
 
 	/**
-	 * Deactivates the given user.
-	 * 
-	 * @param string $username
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::deactivate()
 	 */
 	public function deactivate(string $username)
 	{
@@ -110,10 +103,8 @@ class WSSEUserManipulator
 	}
 
 	/**
-	 * Changes the password for the given user.
-	 * 
-	 * @param string $username
-	 * @param string $password
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::changePassword()
 	 */
 	public function changePassword(string $username, string $password)
 	{
@@ -126,12 +117,8 @@ class WSSEUserManipulator
 	}
 	
 	/**
-	 * Adds role to the given user.
-	 * 
-	 * @param string $username
-	 * @param string $role
-	 * 
-	 * @return bool true if role was added, false if user already had the role
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::addRole()
 	 */
 	public function addRole(string $username, string $role) :bool
 	{
@@ -148,12 +135,8 @@ class WSSEUserManipulator
 	}
 
 	/**
-	 * Removes role from the given user.
-	 * 
-	 * @param string $username
-	 * @param string $role
-	 * 
-	 * @return bool true if role was removed, false if user didn't have the role
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::removeRole()
 	 */
 	public function removeRole(string $username, string $role) :bool
 	{
@@ -170,12 +153,8 @@ class WSSEUserManipulator
 	}
 	
 	/**
-	 * Adds $ip to the given user.
-	 * 
-	 * @param string $username
-	 * @param string $ip
-	 * 
-	 * @return bool true if $ip was added, false if user already had the $ip
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::addAllowedIp()
 	 */
 	public function addAllowedIp(string $username, string $ip) :bool
 	{
@@ -192,12 +171,8 @@ class WSSEUserManipulator
 	}
 
 	/**
-	 * Removes $ip from the given user.
-	 * 
-	 * @param string $username
-	 * @param string $ip
-	 * 
-	 * @return bool true if $ip was removed, false if user didn't have the $ip
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::removeAllowedIp()
 	 */
 	public function removeAllowedIp(string $username, string $ip) :bool
 	{
@@ -214,9 +189,8 @@ class WSSEUserManipulator
 	}
 	
 	/**
-	 * Deletes the given user.
-	 * 
-	 * @param string $username
+	 * {@inheritDoc}
+	 * @see \Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface::delete()
 	 */
 	public function delete(string $username)
 	{

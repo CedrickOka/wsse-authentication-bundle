@@ -1,7 +1,7 @@
 <?php
 namespace Oka\WSSEAuthenticationBundle\Command;
 
-use Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator;
+use Oka\WSSEAuthenticationBundle\Model\WSSEUserManipulatorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,11 +16,11 @@ use Symfony\Component\Console\Question\Question;
 abstract class UserCommand extends Command
 {
 	/**
-	 * @var WSSEUserManipulator $userManipulator
+	 * @var WSSEUserManipulatorInterface $userManipulator
 	 */
 	protected $userManipulator;
 	
-	public function __construct(WSSEUserManipulator $userManipulator = null)
+	public function __construct(WSSEUserManipulatorInterface $userManipulator = null)
 	{
 		parent::__construct();
 		
@@ -33,17 +33,6 @@ abstract class UserCommand extends Command
 	protected function configure()
 	{
 		$this->addArgument('username', InputArgument::REQUIRED, 'The username');
-	}
-	
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function initialize(InputInterface $input, OutputInterface $output)
-	{
-		if (null === $this->userManipulator) {
-			$output->writeln('<error>Install the bundles "doctrine/doctrine-bundle" or "doctrine/mongodb-odm-bundle" and configure "oka_wsse_authentication.user_class" for to be able to use this command.</error>');
-			exit();
-		}
 	}
 	
 	/**

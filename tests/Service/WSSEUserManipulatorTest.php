@@ -1,5 +1,5 @@
 <?php
-namespace Oka\WSSEAuthenticationBundle\Tests\Util;
+namespace Oka\WSSEAuthenticationBundle\Tests\Service;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -16,7 +16,7 @@ class WSSEUserManipulatorTest extends KernelTestCase
 	protected $userProvider;
 	
 	/**
-	 * @var \Oka\WSSEAuthenticationBundle\Util\WSSEUserManipulator $userManipulator
+	 * @var \Oka\WSSEAuthenticationBundle\Service\WSSEUserManipulator $userManipulator
 	 */
 	protected $userManipulator;
 	

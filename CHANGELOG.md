@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 1.1.4 (2019-06-21)
+
+* Fix bug with using proxy user manipulator.
+
 #### 1.1.3 (2019-06-14)
 
 * Fix wsse user provider bad dependency.
