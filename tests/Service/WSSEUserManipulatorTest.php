@@ -25,7 +25,7 @@ class WSSEUserManipulatorTest extends KernelTestCase
 		self::bootKernel();
 		
 		$this->userProvider = static::$kernel->getContainer()->get('oka_wsse_authentication.wsse_user_provider');
-		$this->userManipulator = static::$kernel->getContainer()->get('oka_wsse_authentication.util.wsse_user_manipulator');
+		$this->userManipulator = static::$kernel->getContainer()->get('oka_wsse_authentication.wsse_user_manipulator');
 	}
 	
 	/**
