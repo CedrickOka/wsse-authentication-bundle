@@ -20,7 +20,7 @@ abstract class UserCommand extends Command
 	 */
 	protected $userManipulator;
 	
-	public function __construct(WSSEUserManipulatorInterface $userManipulator = null)
+	public function __construct(WSSEUserManipulatorInterface $userManipulator)
 	{
 		parent::__construct();
 		

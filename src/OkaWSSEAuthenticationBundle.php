@@ -19,7 +19,6 @@ class OkaWSSEAuthenticationBundle extends Bundle
 		
 		$this->addRegisterMappingsPass($container);
 		
-		/** @var \Symfony\Component\DependencyInjection\Extension\ExtensionInterface $extension */
 		$extension = $container->getExtension('security');
 		$extension->addUserProviderFactory(new WSSEUserProviderFactory());	
 	}

@@ -19,7 +19,7 @@ class WSSEUserManipulatorProxy implements WSSEUserManipulatorInterface
 	private $userManipulator;
 	
 	public function setUserManipulator(WSSEUserManipulatorInterface $userManipulator)
-	{		
+	{
 		return $this->userManipulator = $userManipulator;
 	}
 	
@@ -125,7 +125,7 @@ class WSSEUserManipulatorProxy implements WSSEUserManipulatorInterface
 	private function throwExceptionIfIsEmpty()
 	{
 		if (null === $this->userManipulator) {
-			throw new \LogicException('Install the bundles "doctrine/doctrine-bundle" or "doctrine/mongodb-odm-bundle" and configure "oka_wsse_authentication.user_class" for to be able to use the service with ID "@oka_wsse_authentication.util.wsse_user_manipulator".');
+			throw new \LogicException('Install the bundles "doctrine/doctrine-bundle" or "doctrine/mongodb-odm-bundle" and configure "oka_wsse_authentication.user_class" for to be able to use the service with ID "@oka_wsse_authentication.wsse_user_manipulator".');
 		}
 	}
 }
