@@ -3,7 +3,6 @@ namespace Oka\WSSEAuthenticationBundle\DependencyInjection;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oka\WSSEAuthenticationBundle\Security\Authorization\Voter\AllowedIpsVoter;
-use Oka\WSSEAuthenticationBundle\Security\Guard\WSSEAuthenticator;
 use Oka\WSSEAuthenticationBundle\Security\Nonce\Storage\Handler\FileNonceHandler;
 use Oka\WSSEAuthenticationBundle\Service\WSSEUserManipulator;
 use Oka\WSSEAuthenticationBundle\Service\WSSEUserManipulatorProxy;
@@ -57,21 +56,7 @@ class OkaWSSEAuthenticationExtension extends Extension implements CompilerPassIn
 			$container->setParameter('oka_wsse_authentication.user_class', $config['user_class']);
 		}
 		
-// 		$container->setAlias('oka_wsse_authentication.doctrine_registry', new Alias(self::$doctrineDrivers[$config['db_driver']]['registry'], false));
-// 		$objectManagerDefinition = new Definition(ObjectManager::class);
-// 		$objectManagerDefinition->setFactory([new Reference('oka_wsse_authentication.doctrine_registry'), 'getManager']);
-// 		$container->setDefinition('oka_wsse_authentication.object_manager', $objectManagerDefinition);
-		
-// 		if (true === $container->hasDefinition(self::$doctrineDrivers[$config['db_driver']]['registry']) && null !== $config['user_class']) {
-// 			$userManipulatorDefinition = new Definition(WSSEUserManipulator::class);
-// 			$userManipulatorDefinition->addArgument(new Reference('oka_wsse_authentication.object_manager'));
-// 			$userManipulatorDefinition->addArgument(new Reference('event_dispatcher'));
-// 			$userManipulatorDefinition->addArgument($config['user_class']);
-// 			$userManipulatorDefinition->setPublic(true);
-// 			$container->setDefinition('oka_wsse_authentication.util.wsse_user_manipulator', $userManipulatorDefinition);
-// 		}
-		
-		// Configure Nonce		
+		// Configure Nonce
 		if (null === ($nonceHandlerId = $config['nonce']['handler_id'])) {
 			$nonceHandlerId = 'oka_wsse_authentication.nonce.file_handler';
 			$savePath = $config['nonce']['save_path'] ?: $container->getParameter('kernel.cache_dir') . '/oka_wsse/nonces';
@@ -79,13 +64,10 @@ class OkaWSSEAuthenticationExtension extends Extension implements CompilerPassIn
 		}
 		
 		// Configure guard authenticator
-		$authenticatorDefinition = new Definition(WSSEAuthenticator::class);
-		$authenticatorDefinition->addArgument(new Reference($nonceHandlerId));
-		$authenticatorDefinition->addArgument(new Reference('event_dispatcher'));
-		$authenticatorDefinition->addArgument($config['nonce']['lifetime']);
-		$authenticatorDefinition->addArgument($config['realm']);
-		$container->setDefinition('oka_wsse_authentication.wsse_authenticator', $authenticatorDefinition);
-		$container->setAlias('oka_wsse_authentication.wsse_token_authenticator', new Alias('oka_wsse_authentication.wsse_authenticator', false));
+		$authenticatorDefinition = $container->getDefinition('oka_wsse_authentication.wsse_authenticator');
+		$authenticatorDefinition->replaceArgument(0, new Reference($nonceHandlerId));
+		$authenticatorDefinition->replaceArgument(3, $config['nonce']['lifetime']);
+		$authenticatorDefinition->replaceArgument(4, $config['realm']);
 		
 		// Configure authorization allowed IPs voter
 		if (true === $config['enabled_allowed_ips_voter']) {

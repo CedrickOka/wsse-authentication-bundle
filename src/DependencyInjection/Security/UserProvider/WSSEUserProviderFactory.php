@@ -34,7 +34,7 @@ class WSSEUserProviderFactory implements UserProviderFactoryInterface
 						->ifTrue(function($class){
 							return !(new \ReflectionClass($class))->implementsInterface(WSSEUserInterface::class);
 						})
-						->thenInvalid('The %s class must implement '.WSSEUserInterface::class.' for using the "oka_wsse" user provider.')
+						->thenInvalid('The %s class must implement '.WSSEUserInterface::class.' for using the "wsse" user provider.')
 					->end()
 				->end()
 			->end();
@@ -42,6 +42,6 @@ class WSSEUserProviderFactory implements UserProviderFactoryInterface
 	
 	public function getKey()
 	{
-		return 'oka_wsse';
+		return 'wsse';
 	}
 }

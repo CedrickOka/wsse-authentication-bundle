@@ -1,6 +1,11 @@
 Changelog
 =========
 
+#### 2.0.0 (2019-08-24)
+
+* Added custom authentication provide wsse.
+* Renamed custom user provider `oka_wsse` to `wsse`.
+
 #### 1.1.4 (2019-06-21)
 
 * Fix bug with using proxy user manipulator.

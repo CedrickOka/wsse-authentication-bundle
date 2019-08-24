@@ -193,7 +193,7 @@ oka_wsse_authentication:
     db_driver: orm
     model_manager_name: null
     user_class: Acme\AuthenticationBundle\Entity\WSSEUser
-    realm: 'Secure Area'
+    realm: 'Secured Area'
     nonce:
         lifetime: 300
     enabled_allowed_ips_voter: true # Enables the voter that allows access to requests at only certain ips allocated for the current authenticated client
@@ -204,19 +204,19 @@ Add the following configuration to your `config/packages/security.yaml`.
 ``` yaml
 # config/packages/security.yaml
 security:
-# Add `wsse_user_provider` in providers configuration section and using the "oka_wsse" user provider
+# Add `user_provider` in providers configuration section and using the "wsse" user provider
     providers:
-        wsse_user_provider:
-            oka_wsse:
+        user_provider:
+            wsse:
                 class: Acme\AuthenticationBundle\Entity\WSSEUser
 
 # Add `wsse` in firewalls configuration section
     firewalls:
-        wsse:
+        api:
             request_matcher: oka_wsse_authentication.request_matcher
             stateless: true
             anonymous: true
-            provider: wsse_user_provider
+            provider: user_provider
             guard:
                 authenticators: [oka_wsse_authentication.wsse_authenticator]
 

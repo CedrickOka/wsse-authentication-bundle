@@ -4,12 +4,32 @@ services:
         tags: ['console.command']
         arguments: ['@oka_wsse_authentication.wsse_user_manipulator']
 
+    oka_wsse_authentication.wsse.security.authentication.provider:
+        class: Oka\WSSEAuthenticationBundle\Security\Authentication\Provider\WSSEAuthenticationProvider
+        arguments: ['', '', '']
+        public: false
+
+    oka_wsse_authentication. wsse.security.authentication.listener:
+        class: Oka\WSSEAuthenticationBundle\Security\Firewall\WSSEListener
+        arguments: ['@security.token_storage', '@security.authentication.manager', '@event_dispatcher', '@translator', '@logger', '']
+        public: false
+
+    oka_wsse_authentication.wsse_authenticator:
+        class: Oka\WSSEAuthenticationBundle\Security\Guard\WSSEAuthenticator
+        arguments: ['', '@event_dispatcher', '@translator', '', '']
+        public: false
+
+    oka_wsse_authentication.wsse_token_authenticator:
+        alias: oka_wsse_authentication.wsse_authenticator
+        deprecated: true
+        public: false
+
     Oka\WSSEAuthenticationBundle\Service\WSSEUserManipulatorProxy:
         arguments: []
 
     oka_wsse_authentication.wsse_user_manipulator:
-        public: true
         alias: Oka\WSSEAuthenticationBundle\Service\WSSEUserManipulatorProxy
+        public: true
 
     oka_wsse_authentication.wsse_request_matcher:
         class: Oka\WSSEAuthenticationBundle\Http\WSSERequestMatcher

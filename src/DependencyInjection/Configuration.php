@@ -49,7 +49,7 @@ class Configuration implements ConfigurationInterface
 					->end()
 					
 					->scalarNode('realm')
-						->defaultValue('Secure Area')
+						->defaultValue('Secured Area')
 					->end()
 					
 					->arrayNode('nonce')

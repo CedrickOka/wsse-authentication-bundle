@@ -3,11 +3,11 @@ namespace Oka\WSSEAuthenticationBundle\Security\Guard;
 
 use Oka\WSSEAuthenticationBundle\Events;
 use Oka\WSSEAuthenticationBundle\Event\AuthenticationFailureEvent;
+use Oka\WSSEAuthenticationBundle\Security\AuthenticatorTrait;
 use Oka\WSSEAuthenticationBundle\Security\Core\Exception\NonceExpiredException;
 use Oka\WSSEAuthenticationBundle\Security\Nonce\Nonce;
 use Oka\WSSEAuthenticationBundle\Security\Nonce\Storage\Handler\NonceHandlerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
@@ -24,6 +25,8 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
  */
 class WSSEAuthenticator extends AbstractGuardAuthenticator
 {
+	use AuthenticatorTrait;
+	
 	/**
 	 * @var NonceHandlerInterface $nonceHandler
 	 */
@@ -39,15 +42,11 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	 */
 	private $lifetime;
 	
-	/**
-	 * @var string $realm
-	 */
-	private $realm;
-	
-	public function __construct(NonceHandlerInterface $nonceHandler, EventDispatcherInterface $dispatcher, $lifetime, $realm)
+	public function __construct(NonceHandlerInterface $nonceHandler, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, $lifetime, $realm)
 	{
 		$this->nonceHandler = $nonceHandler;
 		$this->dispatcher = $dispatcher;
+		$this->translator = $translator;
 		$this->lifetime = $lifetime;
 		$this->realm = $realm;
 	}
@@ -59,25 +58,6 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	public function supports(Request $request)
 	{
 		return $request->headers->has('Authorization') || $request->headers->has('X-WSSE');
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * @see \Symfony\Component\Security\Guard\AuthenticatorInterface::getCredentials()
-	 */
-	public function getCredentials(Request $request)
-	{
-		if (!$token = ($request->headers->get('Authorization') ?? $request->headers->get('X-WSSE'))) {
-			throw new TokenNotFoundException('No token could be found.');
-		}
-		
-		$credentials = [];
-		
-		if (!preg_match('#UsernameToken Username="([^"]+)", PasswordDigest="([^"]+)", Nonce="([^"]+)", Created="([^"]+)"#', $token, $credentials)) {
-			throw new TokenNotFoundException('No token could be found.');
-		}
-		
-		return $credentials;
 	}
 	
 	/**
@@ -138,7 +118,7 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	 */
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
 	{
-		$event = new AuthenticationFailureEvent($exception, $this->createAuthenticationFailureResponse($exception->getMessage()));
+		$event = new AuthenticationFailureEvent($exception, $this->createAuthenticationFailureResponse($exception));
 		$this->dispatcher->dispatch($event, Events::AUTHENTICATION_FAILURE);
 		
 		return $event->getResponse();
@@ -151,7 +131,7 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	public function start(Request $request, AuthenticationException $authException = null)
 	{
 		$exception = new TokenNotFoundException('No token could be found', 401, $authException);
-		$event = new AuthenticationFailureEvent($exception, $this->createAuthenticationFailureResponse($exception->getMessage()));
+		$event = new AuthenticationFailureEvent($exception, $this->createAuthenticationFailureResponse($exception));
 		$this->dispatcher->dispatch($event, Events::AUTHENTICATION_FAILURE);
 		
 		return $event->getResponse();
@@ -164,12 +144,5 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	public function supportsRememberMe()
 	{
 		return false;
-	}
-	
-	protected function createAuthenticationFailureResponse($message, $statusCode = 401, array $headers = [])
-	{
-		$headers['WWW-Authenticate'] = sprintf('WSSE realm="%s", profile="UsernameToken"', $this->realm);
-		
-		return new JsonResponse(['code' => $statusCode, 'message' => $message], $statusCode, $headers);
 	}
 }
