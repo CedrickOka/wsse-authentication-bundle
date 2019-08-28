@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 2.0.1 (2019-08-28)
+
+* Fix bug.
+
 #### 2.0.0 (2019-08-24)
 
 * Added custom authentication provide wsse.

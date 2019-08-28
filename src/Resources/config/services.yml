@@ -21,7 +21,6 @@ services:
 
     oka_wsse_authentication.wsse_token_authenticator:
         alias: oka_wsse_authentication.wsse_authenticator
-        deprecated: true
         public: false
 
     Oka\WSSEAuthenticationBundle\Service\WSSEUserManipulatorProxy:
