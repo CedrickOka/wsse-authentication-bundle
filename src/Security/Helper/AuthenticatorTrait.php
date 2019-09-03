@@ -1,5 +1,5 @@
 <?php
-namespace Oka\WSSEAuthenticationBundle\Security;
+namespace Oka\WSSEAuthenticationBundle\Security\Helper;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

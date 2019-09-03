@@ -3,7 +3,7 @@ namespace Oka\WSSEAuthenticationBundle\Security\Firewall;
 
 use Oka\WSSEAuthenticationBundle\Events;
 use Oka\WSSEAuthenticationBundle\Event\AuthenticationFailureEvent;
-use Oka\WSSEAuthenticationBundle\Security\AuthenticatorTrait;
+use Oka\WSSEAuthenticationBundle\Security\Helper\AuthenticatorTrait;
 use Oka\WSSEAuthenticationBundle\Security\Authentication\Token\WSSEUserToken;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

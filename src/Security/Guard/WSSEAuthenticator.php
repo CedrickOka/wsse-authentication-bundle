@@ -3,7 +3,7 @@ namespace Oka\WSSEAuthenticationBundle\Security\Guard;
 
 use Oka\WSSEAuthenticationBundle\Events;
 use Oka\WSSEAuthenticationBundle\Event\AuthenticationFailureEvent;
-use Oka\WSSEAuthenticationBundle\Security\AuthenticatorTrait;
+use Oka\WSSEAuthenticationBundle\Security\Helper\AuthenticatorTrait;
 use Oka\WSSEAuthenticationBundle\Security\Core\Exception\NonceExpiredException;
 use Oka\WSSEAuthenticationBundle\Security\Nonce\Nonce;
 use Oka\WSSEAuthenticationBundle\Security\Nonce\Storage\Handler\NonceHandlerInterface;
