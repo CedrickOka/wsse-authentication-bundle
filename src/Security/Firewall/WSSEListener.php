@@ -83,7 +83,7 @@ class WSSEListener implements ListenerInterface
 			$this->logger->info(sprintf('Login with WS-Security failed, caused by : %s', $e->getMessage()), $credentials ?? []);
 			
 			$authenticationFailureEvent = new AuthenticationFailureEvent($e, $this->createAuthenticationFailureResponse($e));
-			$this->dispatcher->dispatch($authenticationFailureEvent, Events::AUTHENTICATION_FAILURE);
+			$this->dispatcher->dispatch(Events::AUTHENTICATION_FAILURE, $authenticationFailureEvent);
 			
 // 			// To deny the authentication clear the token. This will redirect to the login page.
 // 			// Make sure to only clear your token, not those of other authentication listeners.

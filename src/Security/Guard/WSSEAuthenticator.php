@@ -4,8 +4,7 @@ namespace Oka\WSSEAuthenticationBundle\Security\Guard;
 use Oka\WSSEAuthenticationBundle\Events;
 use Oka\WSSEAuthenticationBundle\Event\AuthenticationFailureEvent;
 use Oka\WSSEAuthenticationBundle\Security\Helper\AuthenticatorTrait;
-use Oka\WSSEAuthenticationBundle\Security\Core\Exception\NonceExpiredException;
-use Oka\WSSEAuthenticationBundle\Security\Nonce\Nonce;
+use Oka\WSSEAuthenticationBundle\Security\Helper\CredentialsCheckerTrait;
 use Oka\WSSEAuthenticationBundle\Security\Nonce\Storage\Handler\NonceHandlerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,22 +24,12 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class WSSEAuthenticator extends AbstractGuardAuthenticator
 {
-	use AuthenticatorTrait;
-	
-	/**
-	 * @var NonceHandlerInterface $nonceHandler
-	 */
-	private $nonceHandler;
+	use AuthenticatorTrait, CredentialsCheckerTrait;
 	
 	/**
 	 * @var EventDispatcherInterface $dispatcher
 	 */
 	private $dispatcher;
-	
-	/**
-	 * @var integer $lifetime
-	 */
-	private $lifetime;
 	
 	public function __construct(NonceHandlerInterface $nonceHandler, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, $lifetime, $realm)
 	{
@@ -80,27 +69,7 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	 */
 	public function checkCredentials($credentials, UserInterface $user)
 	{
-		$currentTime = time();
-		
-		// Check that the created has not expired
-		if (($currentTime < strtotime($credentials[4]) - $this->lifetime) || ($currentTime > strtotime($credentials[4]) + $this->lifetime)) {
-			throw new AuthenticationException('Created timestamp is not valid.');
-		}
-		
-		$nonce = new Nonce(base64_decode($credentials[3]), $this->nonceHandler);
-		
-		// Validate that the nonce is *not* used in the last 5 minutes
-		// if it has, this could be a replay attack
-		if (true === $nonce->isAlreadyUsed($currentTime, $this->lifetime)) {
-			throw new NonceExpiredException('Digest nonce has expired.');
-		}
-		
-		$nonce->save($currentTime);
-		
-		$expected = base64_encode(sha1($nonce->getId().$credentials[4].$user->getPassword(), true));
-		
-		// Valid the secret
-		return hash_equals($expected, $credentials[2]);
+		return $this->check($credentials[2], $credentials[3], $credentials[4], $user->getPassword());
 	}
 	
 	/**
@@ -119,7 +88,7 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
 	{
 		$event = new AuthenticationFailureEvent($exception, $this->createAuthenticationFailureResponse($exception));
-		$this->dispatcher->dispatch($event, Events::AUTHENTICATION_FAILURE);
+		$this->dispatcher->dispatch(Events::AUTHENTICATION_FAILURE, $event);
 		
 		return $event->getResponse();
 	}
@@ -132,7 +101,7 @@ class WSSEAuthenticator extends AbstractGuardAuthenticator
 	{
 		$exception = new TokenNotFoundException('No token could be found', 401, $authException);
 		$event = new AuthenticationFailureEvent($exception, $this->createAuthenticationFailureResponse($exception));
-		$this->dispatcher->dispatch($event, Events::AUTHENTICATION_FAILURE);
+		$this->dispatcher->dispatch(Events::AUTHENTICATION_FAILURE, $event);
 		
 		return $event->getResponse();
 	}

@@ -2,12 +2,10 @@
 namespace Oka\WSSEAuthenticationBundle\Security\Authentication\Provider;
 
 use Oka\WSSEAuthenticationBundle\Security\Authentication\Token\WSSEUserToken;
-use Oka\WSSEAuthenticationBundle\Security\Core\Exception\NonceExpiredException;
-use Oka\WSSEAuthenticationBundle\Security\Nonce\Nonce;
+use Oka\WSSEAuthenticationBundle\Security\Helper\CredentialsCheckerTrait;
 use Oka\WSSEAuthenticationBundle\Security\Nonce\Storage\Handler\NonceHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -18,20 +16,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class WSSEAuthenticationProvider implements AuthenticationProviderInterface
 {
+	use CredentialsCheckerTrait;
+	
 	/**
 	 * @var UserProviderInterface $userProvider
 	 */
 	private $userProvider;
-	
-	/**
-	 * @var NonceHandlerInterface $nonceHandler
-	 */
-	private $nonceHandler;
-	
-	/**
-	 * @var integer $lifetime
-	 */
-	private $lifetime;
 	
 	/**
 	 * @param UserProviderInterface $userProvider
@@ -77,33 +67,11 @@ class WSSEAuthenticationProvider implements AuthenticationProviderInterface
 	 * @param string $nonce
 	 * @param string $created
 	 * @param string $secret
-	 * @throws AuthenticationException
-	 * @throws NonceExpiredException
+	 * @throws \Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException
 	 * @return boolean
 	 */
 	protected function validateDigest($digest, $nonce, $created, $secret)
 	{
-		$currentTime = time();
-		
-		// Check that the created has not expired
-		if (($currentTime < strtotime($created) - $this->lifetime) || ($currentTime > strtotime($created) + $this->lifetime)) {
-			throw new AuthenticationException('Created timestamp is not valid.');
-		}
-		
-		$nonce = new Nonce(base64_decode($nonce), $this->nonceHandler);
-		
-		// Validate that the nonce is *not* used in the last 5 minutes
-		// if it has, this could be a replay attack
-		if (true === $nonce->isAlreadyUsed($currentTime, $this->lifetime)) {
-			throw new NonceExpiredException('Previously used nonce detected.');
-		}
-		
-		// Save nonce
-		$nonce->save($currentTime);
-		
-		$expected = base64_encode(sha1($nonce->getId().$created.$secret, true));
-		
-		// Validate the secret
-		return hash_equals($expected, $digest);
+		return $this->check($digest, $nonce, $created, $secret);
 	}
 }
