@@ -10,6 +10,8 @@ This bundle provides a WSSE authentication provider.
 [![Monthly Downloads](https://poser.pugx.org/coka/wsse-authentication-bundle/d/monthly)](https://packagist.org/packages/coka/wsse-authentication-bundle)
 [![Daily Downloads](https://poser.pugx.org/coka/wsse-authentication-bundle/d/daily)](https://packagist.org/packages/coka/wsse-authentication-bundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/f59a4801-bab9-4032-96c1-e246e9a4ecda/mini.png)](https://insight.sensiolabs.com/projects/f59a4801-bab9-4032-96c1-e246e9a4ecda)
+[![Travis CI](https://travis-ci.org/CedrickOka/wsse-authentication-bundle.svg?branch=master)](https://travis-ci.org/CedrickOka/wsse-authentication-bundle)
+
 
 Latest updates
 --------------

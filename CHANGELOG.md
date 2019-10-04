@@ -1,6 +1,10 @@
 Changelog
 =========
 
+#### 2.2.0 (2019-10-04)
+
+* Added travis.yml for CI.
+
 #### 2.1.0 (2019-09-11)
 
 * Fix bug.
